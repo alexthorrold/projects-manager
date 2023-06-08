@@ -2,8 +2,6 @@ import React from 'react';
 import ProjectList from './ProjectList';
 import AddProjectButton from './AddProjectButton';
 import AddProjectModal from './AddProjectModal';
-import SearchBar from './SearchBar';
-import Navbar from './Navbar';
 
 function App() {
     const [projects, setProjects] = React.useState([]);
@@ -51,7 +49,6 @@ function App() {
 
     return (
         <div className="App">
-            <Navbar />
             <ProjectList projects={projects} onDelete={handleDeleteProject} />
             <AddProjectButton onClick={displayModal} />
             <AddProjectModal
