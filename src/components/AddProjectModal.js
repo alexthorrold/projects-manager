@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
+// Modal with form for adding a new project
 const AddProjectModal = ({ show, onClose, handleSave }) => {
     const [projectName, setProjectName] = React.useState('');
     const [description, setDescription] = React.useState('');
@@ -16,6 +17,7 @@ const AddProjectModal = ({ show, onClose, handleSave }) => {
         setErrors({});
     };
 
+    // Checks inputs for errors and saves the project if there are none
     const handleSubmit = () => {
         const newErrors = {};
 

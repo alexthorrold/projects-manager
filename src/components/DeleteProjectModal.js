@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
+// Modal to verify user wants to delete a project, if confirms then calls handleDelete to delete the project
 const DeleteProjectModal = ({ show, onClose, handleDelete }) => {
     return (
         <Modal show={show} onHide={onClose}>

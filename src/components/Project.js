@@ -4,23 +4,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import DeleteProjectModal from './DeleteProjectModal';
 
+// Project component for displaying a project's details
 const Project = ({ project, onDelete }) => {
     const { projectName, projectIdentifier, description, startDate, endDate } =
         project;
 
     const [showDeleteModal, setShowDeleteModal] = React.useState(false);
 
+    // Closes the delete modal
     const handleCloseDeleteModal = () => {
         setShowDeleteModal(false);
     };
 
+    // Calls onDelete to delete the project
     const handleDelete = () => {
         onDelete(projectIdentifier);
         setShowDeleteModal(false);
     };
 
     return (
-        <Card className="mb-4">
+        <Card className="mt-4">
             <Card.Header className="d-flex justify-content-between align-items-center">
                 <h3>{projectName}</h3>
                 <FontAwesomeIcon

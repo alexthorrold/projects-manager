@@ -1,6 +1,7 @@
 import React from 'react';
 import Project from './Project';
 
+// Displays all projects and their information
 const ProjectList = ({ projects, onDelete }) => {
     return (
         <div className="container">
