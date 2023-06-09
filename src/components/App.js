@@ -6,10 +6,9 @@ import Navbar from './Navbar';
 
 function App() {
     const [projects, setProjects] = React.useState([]);
-    const [projectsData, setProjectsData] = React.useState([]);
     const [showModal, setShowModal] = React.useState(false);
     const [maxProjectId, setMaxProjectId] = React.useState(0);
-    const [searchValue, setSearchValue] = React.useState('');
+    const [searchQuery, setSearchQuery] = React.useState('');
     const [sortField, setSortField] = React.useState('projectName');
     const [sortOrder, setSortOrder] = React.useState('asc');
 
@@ -18,7 +17,6 @@ function App() {
         fetch(process.env.PUBLIC_URL + '/data.json')
             .then((response) => response.json())
             .then((data) => {
-                setProjectsData(data);
                 setProjects(data);
 
                 const maxId = Math.max(
@@ -31,29 +29,22 @@ function App() {
             .catch((error) => console.error('Error:', error));
     }, []);
 
-    React.useEffect(() => {
-        console.log(projects);
-        console.log(projectsData);
-        const newProjects = projectsData.filter((project) =>
-            project.projectName
-                .toLowerCase()
-                .includes(searchValue.toLowerCase())
-        );
-        setProjects(newProjects);
-    }, [searchValue, projectsData]);
-
-    React.useEffect(() => {
-        const newProjects = [...projects].sort((a, b) => {
-            if (a[sortField] < b[sortField]) {
-                return sortOrder === 'asc' ? -1 : 1;
+    const sortedProjects = React.useMemo(() => {
+        return [...projects].sort((a, b) => {
+            if (sortOrder === 'asc') {
+                return a[sortField].localeCompare(b[sortField]);
+            } else {
+                return b[sortField].localeCompare(a[sortField]);
             }
-            if (a[sortField] > b[sortField]) {
-                return sortOrder === 'asc' ? 1 : -1;
-            }
-            return 0;
         });
-        setProjects(newProjects);
-    }, [sortField, sortOrder, projectsData]);
+    }, [projects, sortOrder, sortField]);
+
+    const filteredProducts = React.useMemo(() => {
+        if (searchQuery === '') {
+            return sortedProjects;
+        }
+        return sortedProjects.filter((project) => project.projectName.toLowerCase().includes(searchQuery.toLowerCase()));
+    }, [sortedProjects, searchQuery]);
 
     // Displays AddProjectModal
     const displayModal = () => {
@@ -68,7 +59,6 @@ function App() {
     // Deletes project with the given projectIdentifier
     const handleDeleteProject = (projectIdentifier) => {
         setProjects(projects.filter((project) => project.projectIdentifier !== projectIdentifier));
-        setProjectsData(projectsData.filter((project) => project.projectIdentifier !== projectIdentifier));
     };
 
     // Saves the new project to the projects array
@@ -77,17 +67,12 @@ function App() {
         setMaxProjectId(maxProjectId + 1);
 
         setProjects([...projects, newProject]);
-        setProjectsData([...projectsData, newProject]);
     };
-
-    const toggleSortOrder = () => {
-        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    }
 
     return (
         <div className="App">
-            <Navbar onSearchBarChange={setSearchValue} onSortFieldChange={setSortField} onSortOrderChange={toggleSortOrder} />
-            <ProjectList projects={projects} onDelete={handleDeleteProject} />
+            <Navbar onSortFieldChange={setSortField} onSortOrderChange={setSortOrder} onSearchQueryChange={setSearchQuery} />
+            <ProjectList projects={filteredProducts} onDelete={handleDeleteProject} />
             <AddProjectButton onClick={displayModal} />
             <AddProjectModal
                 show={showModal}

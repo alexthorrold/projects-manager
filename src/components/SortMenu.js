@@ -1,15 +1,22 @@
 import React from 'react';
 import { Button, Dropdown, Nav } from 'react-bootstrap';
-import { FaArrowDown, FaArrowUp } from 'react-icons/fa';
+import { FaSort } from 'react-icons/fa';
 
 // Dropdown menu for sorting projects and toggle button for changing order ascending/descending
 const SortMenu = ({ onSortFieldChange, onSortOrderChange }) => {
-    const [sortField, setSortField] = React.useState('projectName');
-    const [sortOrder, setSortOrder] = React.useState('asc');
+    const handleSortFieldChange = (sortField) => {
+        onSortFieldChange(sortField);
+    };
+
+    const handleSortOrderChange = () => {
+        onSortOrderChange((prevOrder) =>
+            prevOrder === 'asc' ? 'desc' : 'asc'
+        );
+    };
 
     return (
         <Nav className="justify-content-end">
-            <Dropdown onSelect={onSortFieldChange}>
+            <Dropdown onSelect={handleSortFieldChange}>
                 <Dropdown.Toggle variant="outline-info">
                     Sort By
                 </Dropdown.Toggle>
@@ -22,8 +29,8 @@ const SortMenu = ({ onSortFieldChange, onSortOrderChange }) => {
                     </Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
-            <Button variant="outline-info" onClick={onSortOrderChange}>
-                {sortOrder === 'asc' ? <FaArrowUp /> : <FaArrowDown />}
+            <Button variant="outline-info" onClick={handleSortOrderChange}>
+                <FaSort />
             </Button>
         </Nav>
     );

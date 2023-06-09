@@ -4,13 +4,13 @@ import SearchBar from './SearchBar';
 import SortMenu from './SortMenu';
 
 // Navbar component for searching and sorting projects
-const Navbar = ({ onSearchBarChange, onSortFieldChange, onSortOrderChange }) => {
+const Navbar = ({ onSearchQueryChange, onSortFieldChange, onSortOrderChange }) => {
     return (
         <BootstrapNavbar bg="dark" variant="dark" className="p-2">
             <BootstrapNavbar.Brand>Project Manager</BootstrapNavbar.Brand>
             <BootstrapNavbar.Collapse className="justify-content-end">
                 <SortMenu onSortFieldChange={onSortFieldChange} onSortOrderChange={onSortOrderChange} />
-                <SearchBar onSearchBarChange={onSearchBarChange} />
+                <SearchBar onSearchQueryChange={onSearchQueryChange} />
             </BootstrapNavbar.Collapse>
         </BootstrapNavbar>
     );
